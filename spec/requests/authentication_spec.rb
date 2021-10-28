@@ -1,37 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe AuthenticationController do
-  let(:email) { Faker::Internet.email }
-  let(:password) { "password" }
+  let(:user) { create :user }
   let(:params) do
     {
-      email: email,
-      password: password
+      email: user.email,
+      password: user.password
     }
   end
 
   describe 'POST /authenticate' do
-    let(:token) { "123" }
+    let(:token) { AuthenticationTokenService.call(user.id) }
 
-    subject { post '/authenticate', params: params }
+    it 'authenticates the user' do
+      post '/authenticate', params: params
 
-    describe 'validations' do
-      before do
-        subject
-      end
+      expect(response.status).to eq(201)
+      expect(JSON.parse(response.body)).to eq({ "token" => token })
+    end
 
-      it 'authenticates the user' do
-        expect(response.status).to eq(200)
-        expect(JSON.parse(response.body)).to eq({ "token" => token })
-      end
+    context 'invalid params' do
+      it 'raises an error' do
+        post '/authenticate', params: { email: nil }
 
-      context 'invalid params' do
-        let(:email) { nil }
-        let(:password) { "password" }
-
-        it 'raises an errors' do
-          expect(response.status).to eq(422)
-        end
+        expect(response.status).to eq(422)
       end
     end
   end
