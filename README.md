@@ -1,24 +1,29 @@
-# README
+# Books
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Gems added
 
-Things you may want to cover:
+* gem 'devise'
+* gem 'jsonapi-serializer'
+* gem 'rack-cors'
+* gem 'pry-byebug'
+* gem 'faker'
+* gem 'factory_bot_rails'
+* gem 'rspec-rails', '~> 5.0', '>= 5.0.2' 
+* gem 'shoulda-matchers', '~> 5.0'
 
-* Ruby version
+## Configuration
 
-* System dependencies
+* `config/database.yml`
 
-* Configuration
+      adapter: postgresql
+      encoding: unicode
+      pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+      username: postgres
 
-* Database creation
+## Getting started
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* in the root of the repository
+            
+      bundle install
+      rails db:create
+      rspec
