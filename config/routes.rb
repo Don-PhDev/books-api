@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   resources :books
   resources :authors
+
+  post '/authenticate', to: 'authentication#create'
 end
