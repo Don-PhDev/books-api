@@ -19,11 +19,29 @@ RSpec.describe AuthenticationController do
       expect(JSON.parse(response.body)).to eq({ "token" => token })
     end
 
-    context 'invalid params' do
-      it 'raises an error' do
-        post '/authenticate', params: { email: nil }
+    describe 'validations' do
+      let(:email) { nil }
+      let(:password) { nil }
 
-        expect(response.status).to eq(422)
+      context 'with invalid params' do
+        it 'raises an error' do
+          post '/authenticate', params: { email: email, password: password }
+
+          expect(response.status).to eq(422)
+        end
+      end
+
+      context 'when password is incorrect' do
+        let(:wrong_password) { "incorrect-password" }
+
+        it 'raises an error' do
+          post '/authenticate', params: {
+            email: user.email,
+            password: "incorrect-password"
+          }
+
+          expect(response.status).to eq(401)
+        end
       end
     end
   end

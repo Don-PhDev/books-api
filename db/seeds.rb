@@ -3,7 +3,7 @@ def create_users
 
   10.times do
     users = User.create(
-      email: Faker::Name.unique.first_name + "@gmail.com", 
+      email: Faker::Name.unique.first_name.downcase + "@gmail.com",
       password: "password"
     )
   end
