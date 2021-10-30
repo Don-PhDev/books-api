@@ -3,6 +3,7 @@
 ## Gems added
 
 * gem 'devise'
+* gem 'bcrypt'
 * gem 'jsonapi-serializer'
 * gem 'rack-cors'
 * gem 'pry-byebug'
@@ -26,4 +27,5 @@
             
       bundle install
       rails db:create
+      rails db:seed
       rspec
