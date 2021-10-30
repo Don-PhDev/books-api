@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AuthenticationController do
+RSpec.describe Api::V1::AuthenticationController do
   let(:user) { create :user }
   let(:params) do
     {
@@ -13,7 +13,7 @@ RSpec.describe AuthenticationController do
     let(:token) { AuthenticationTokenService.call(user.id) }
 
     it 'authenticates the user' do
-      post '/authenticate', params: params
+      post '/api/v1/authenticate', params: params
 
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)).to eq({ "token" => token })
@@ -25,7 +25,7 @@ RSpec.describe AuthenticationController do
 
       context 'with invalid params' do
         it 'raises an error' do
-          post '/authenticate', params: { email: email, password: password }
+          post '/api/v1/authenticate', params: { email: email, password: password }
 
           expect(response.status).to eq(422)
         end
@@ -35,7 +35,7 @@ RSpec.describe AuthenticationController do
         let(:wrong_password) { "incorrect-password" }
 
         it 'raises an error' do
-          post '/authenticate', params: {
+          post '/api/v1/authenticate', params: {
             email: user.email,
             password: "incorrect-password"
           }

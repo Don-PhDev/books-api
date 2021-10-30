@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AuthorsController do
+RSpec.describe Api::V1::BooksController do
   describe "GET /index" do
   end
 end
