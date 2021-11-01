@@ -6,7 +6,11 @@ class Api::V1::BooksController < ApplicationController
   def index
     books = Book.all
 
-    render json: BookSerializer.new(books)
+    render json: books,
+      except: [
+        :created_at,
+        :updated_at
+      ]
   end
 
   def show
@@ -17,7 +21,7 @@ class Api::V1::BooksController < ApplicationController
     book = Book.new(book_params)
 
     if book.save
-      render json: BookSerializer.new(books), status: :created
+      render json: books, status: :created
     else
       render json: book.errors, status: :unprocessable_entity
     end
@@ -46,6 +50,14 @@ class Api::V1::BooksController < ApplicationController
   end
 
   def book_params
-    params.require(:book).permit(:title, :publisher, :published_on, :author_id, :user_id)
+    params
+      .require(:book)
+      .permit(
+        :title,
+        :publisher,
+        :published_on,
+        :author_id,
+        :user_id
+      )
   end
 end
