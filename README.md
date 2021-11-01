@@ -4,7 +4,6 @@
 
 * gem 'devise'
 * gem 'bcrypt'
-* gem 'jsonapi-serializer'
 * gem 'rack-cors'
 * gem 'pry-byebug'
 * gem 'faker'
