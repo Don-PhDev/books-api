@@ -11,6 +11,22 @@ RSpec.describe Api::V1::BooksController do
       ]
     }
   end
+  let(:title) { Faker::Book.unique.title }
+  let(:publisher) { Faker::Book.publisher }
+  let(:published_on) { Date.today.year-rand(400) }
+  let(:author_id) { Author.pluck(:id).sample }
+  let(:user_id) { User.pluck(:id).sample }
+  let(:params) do
+    {
+      book: {
+        title: title,
+        publisher: publisher,
+        published_on: published_on,
+        author_id: author_id,
+        user_id: user_id
+      }
+    }
+  end
 
   describe "GET /api/v1/books" do
     let!(:books) { create_list(:book, 3) }
@@ -22,6 +38,49 @@ RSpec.describe Api::V1::BooksController do
       subject
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body)).to eq(expected_body)
+    end
+  end
+
+  describe "POST /api/v1/books" do
+    subject { post '/api/v1/books', params: params }
+
+    it 'creates new book' do
+      expect{ subject }.to change { Book.count }.by 1
+    end
+
+    describe 'validations' do
+      before do
+        subject
+      end
+
+      context 'with valid input' do
+        it 'returns success status' do
+          expect(response.status).to eq(201)
+        end
+      end
+
+      context 'with invalid input' do
+        let(:title) { nil }
+
+        it 'returns failed status' do
+          expect(response.status).to eq(422)
+        end
+      end
+    end
+  end
+
+  describe "DELETE /api/v1/books/:id" do
+    let!(:book) { create :book }
+
+    subject { delete "/api/v1/books/#{book.id}" }
+
+    it 'reduces the book count' do
+      expect{ subject }.to change { Book.count }.by -1
+    end
+
+    it 'deletes a book' do
+      subject
+      expect(response.status).to eq(204)
     end
   end
 end

@@ -1,12 +1,13 @@
 class Api::V1::BooksController < ApplicationController
   include ActionController::HttpAuthentication::Token
 
-  before_action :authenticate_user, only: [:create, :destroy]
+  before_action :authenticate_user, except: [:index, :show]
+  before_action :set_book, only: [:show, :update, :destroy]
 
   def index
-    books = Book.all
+    @books = Book.all
 
-    render json: books,
+    render json: @books,
       except: [
         :created_at,
         :updated_at
@@ -14,14 +15,14 @@ class Api::V1::BooksController < ApplicationController
   end
 
   def show
-    render json: book
+    render json: @book
   end
 
   def create
     book = Book.new(book_params)
 
     if book.save
-      render json: books, status: :created
+      render json: @books, status: :created
     else
       render json: book.errors, status: :unprocessable_entity
     end
@@ -36,7 +37,7 @@ class Api::V1::BooksController < ApplicationController
   end
 
   def destroy
-    book.destroy
+    @book.destroy
   end
 
   private
@@ -46,7 +47,7 @@ class Api::V1::BooksController < ApplicationController
   end
 
   def set_book
-    book = Book.find(params[:id])
+    @book = Book.find(params[:id])
   end
 
   def book_params
