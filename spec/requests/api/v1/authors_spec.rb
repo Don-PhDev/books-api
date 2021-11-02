@@ -65,4 +65,19 @@ RSpec.describe Api::V1::AuthorsController do
       end
     end
   end
+
+  describe "DELETE /api/v1/authors/:id" do
+    let!(:author) { create :author }
+
+    subject { delete "/api/v1/authors/#{author.id}" }
+
+    it 'successfully deletes an author' do
+      subject
+      expect(response.status).to eq(204)
+    end
+
+    it 'reduces the author count' do
+      expect{ subject }.to change { Author.count }.by -1
+    end
+  end
 end
