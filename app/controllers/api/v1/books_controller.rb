@@ -7,11 +7,7 @@ class Api::V1::BooksController < ApplicationController
   def index
     @books = Book.all
 
-    render json: @books,
-      except: [
-        :created_at,
-        :updated_at
-      ]
+    render json: BookSerializer.new(@books).as_json
   end
 
   def show
