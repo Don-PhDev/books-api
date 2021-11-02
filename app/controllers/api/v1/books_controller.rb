@@ -5,9 +5,9 @@ class Api::V1::BooksController < ApplicationController
   before_action :set_book, only: [:show, :update, :destroy]
 
   def index
-    @books = Book.all
+    books = Book.all
 
-    render json: BooksSerializer.new(@books).as_json
+    render json: BooksSerializer.new(books).as_json
   end
 
   def show

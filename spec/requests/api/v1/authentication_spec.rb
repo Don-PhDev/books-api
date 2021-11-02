@@ -16,7 +16,7 @@ RSpec.describe Api::V1::AuthenticationController do
       post '/api/v1/authenticate', params: params
 
       expect(response.status).to eq(201)
-      expect(JSON.parse(response.body)).to eq({ "token" => token })
+      expect(response_body).to eq({ "token" => token })
     end
 
     describe 'validations' do
@@ -37,7 +37,7 @@ RSpec.describe Api::V1::AuthenticationController do
         it 'raises an error' do
           post '/api/v1/authenticate', params: {
             email: user.email,
-            password: "incorrect-password"
+            password: "wrong_password"
           }
 
           expect(response.status).to eq(401)

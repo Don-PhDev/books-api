@@ -29,7 +29,7 @@ RSpec.describe Api::V1::AuthorsController do
     it 'returns list of all authors' do
       subject
       expect(response.status).to eq(200)
-      expect(JSON.parse(response.body)).to eq(expected_body)
+      expect(response_body).to eq(expected_body)
     end
   end
 
