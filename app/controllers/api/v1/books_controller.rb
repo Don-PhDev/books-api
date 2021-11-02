@@ -7,7 +7,7 @@ class Api::V1::BooksController < ApplicationController
   def index
     @books = Book.all
 
-    render json: BookSerializer.new(@books).as_json
+    render json: BooksSerializer.new(@books).as_json
   end
 
   def show
