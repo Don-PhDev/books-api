@@ -20,7 +20,7 @@ RSpec.describe Api::V1::AuthorsController do
     }
   end
 
-  describe "GET /index" do
+  describe "GET /api/v1/authors" do
     let!(:authors) { create_list(:author, 3) }
     let(:expected_body) { authors.as_json(json_format) }
 
@@ -33,7 +33,7 @@ RSpec.describe Api::V1::AuthorsController do
     end
   end
 
-  describe "GET /show" do
+  describe "GET /api/v1/authors/:id" do
     let(:author) { create :author }
 
     subject { get "/api/v1/authors/#{author.id}" }
@@ -44,7 +44,7 @@ RSpec.describe Api::V1::AuthorsController do
     end
   end
 
-  describe "POST /create" do
+  describe "POST /api/v1/authors" do
     subject { post '/api/v1/authors', params: params }
 
     it 'creates new author' do
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::AuthorsController do
     end
   end
 
-  describe "PATCH /api/v1/authors" do
+  describe "PATCH /api/v1/authors/:id" do
     let!(:author) { create :author }
 
     subject { patch "/api/v1/authors/#{author.id}", params: params }
