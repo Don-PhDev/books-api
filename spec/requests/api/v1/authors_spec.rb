@@ -66,6 +66,34 @@ RSpec.describe Api::V1::AuthorsController do
     end
   end
 
+  describe "PATCH /api/v1/authors" do
+    let!(:author) { create :author }
+
+    subject { patch "/api/v1/authors/#{author.id}", params: params }
+
+    context 'with valid input' do
+      let(:name) { "New Name" }
+
+      it "updates the author's identity" do
+        subject
+        expect(response.status).to eq(200)
+      end
+
+      it "successfully updates" do
+        expect{ subject }.to change { Author.where(name: name).count }.by 1
+      end
+    end
+
+    context 'with invalid input' do
+      let(:name) { nil }
+
+      it 'returns failed status' do
+        subject
+        expect(response.status).to eq(422)
+      end
+    end
+  end
+
   describe "DELETE /api/v1/authors/:id" do
     let!(:author) { create :author }
 

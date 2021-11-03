@@ -1,5 +1,5 @@
 class Api::V1::AuthorsController < ApplicationController
-  before_action :set_author, only: [:show, :destroy]
+  before_action :set_author, only: [:show, :update, :destroy]
 
   def index
     @authors = Author.all
@@ -22,6 +22,14 @@ class Api::V1::AuthorsController < ApplicationController
       render json: @authors, status: :created
     else
       render json: author.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @author.update(author_params)
+      render json: @author
+    else
+      render json: @author.errors, status: :unprocessable_entity
     end
   end
 
