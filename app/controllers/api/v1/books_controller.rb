@@ -25,10 +25,10 @@ class Api::V1::BooksController < ApplicationController
   end
 
   def update
-    if book.update(book_params)
-      render json: book
+    if @book.update(book_params)
+      render json: @book
     else
-      render json: book.errors, status: :unprocessable_entity
+      render json: @book.errors, status: :unprocessable_entity
     end
   end
 

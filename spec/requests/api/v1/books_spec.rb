@@ -41,6 +41,17 @@ RSpec.describe Api::V1::BooksController do
     end
   end
 
+  describe "GET /api/v1/books/:id" do
+    let(:book) { create :book }
+
+    subject { get "/api/v1/books/#{book.id}" }
+
+    it 'returns a book' do
+      subject
+      expect(response.status).to eq(200)
+    end
+  end
+
   describe "POST /api/v1/books" do
     subject { post '/api/v1/books', params: params }
 
@@ -65,6 +76,34 @@ RSpec.describe Api::V1::BooksController do
         it 'returns failed status' do
           expect(response.status).to eq(422)
         end
+      end
+    end
+  end
+
+  describe "PATCH /api/v1/books/:id" do
+    let!(:book) { create :book }
+
+    subject { patch "/api/v1/books/#{book.id}", params: params }
+
+    context 'with valid input' do
+      let(:title) { "New Title" }
+
+      it 'returns success status' do
+        subject
+        expect(response.status).to eq(200)
+      end
+
+      it 'updates book info' do
+        expect{ subject }.to change { Book.where(title: title).count }.by 1
+      end
+    end
+
+    context 'with invalid input' do
+      let(:title) { nil }
+
+      it 'returns failed status' do
+        subject
+        expect(response.status).to eq(422)
       end
     end
   end
